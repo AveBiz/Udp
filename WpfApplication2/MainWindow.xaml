@@ -1,0 +1,89 @@
+﻿<Window
+    x:Class="Udp.Window"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Udp.ViewModel.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="clr-namespace:Udp.ViewModel"
+    Title="ApplicationWindow"
+    Width="609"
+    Height="160"
+    d:DataContext="{d:DesignInstance viewModel:ViewModel}"
+    ResizeMode="CanMinimize"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <converters:StartButtonVisibilityConverter x:Key="StartButtonVisibilityConverter" />
+        <converters:StopButtonVisibilityConverter x:Key="StopButtonVisibilityConverter" />
+        <Style x:Key="LabelAlign" TargetType="Label">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="TextBoxAlign" TargetType="TextBox">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="10,10,10,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                Content="Адрес широковещательной рассылки от 224.0.0.0 до 239.255.255.255"
+                Style="{StaticResource LabelAlign}" />
+            <TextBox
+                Grid.Row="0"
+                Grid.Column="1"
+                Style="{StaticResource TextBoxAlign}"
+                Text="{Binding MulticastAddress, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+        <Label
+            Grid.Row="1"
+            Content="{Binding PersonalAddressText}"
+            Style="{StaticResource LabelAlign}" />
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <Label
+                Grid.Column="0"
+                Content="Колличество активных клиентов: "
+                Style="{StaticResource LabelAlign}" />
+            <TextBox
+                Grid.Column="1"
+                IsReadOnly="True"
+                Style="{StaticResource TextBoxAlign}"
+                Text="{Binding ActiveClientCount, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+        </Grid>
+        <Button
+            Grid.Row="3"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Command="{Binding StartCommand}"
+            Content="Start"
+            Visibility="{Binding IsActive, Converter={StaticResource StartButtonVisibilityConverter}}" />
+        <Button
+            Grid.Row="3"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Command="{Binding StopCommand}"
+            Content="Stop"
+            Visibility="{Binding IsActive, Converter={StaticResource StopButtonVisibilityConverter}}" />
+    </Grid>
+</Window>
