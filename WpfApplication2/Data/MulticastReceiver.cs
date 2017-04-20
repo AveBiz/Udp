@@ -12,7 +12,7 @@ namespace Udp.Data
         [NotNull] private readonly UdpClient _multicastReceiver;
         [NotNull] private readonly NetworkSettings _networkSettings;
 
-        internal CancellationToken CancellationToken { get; set; }
+        internal CancellationToken CancellationToken { private get; set; }
 
         private bool _disposed;
 
@@ -28,11 +28,6 @@ namespace Udp.Data
             _multicastReceiver = new UdpClient(NetworkSettings.MulticastPort);
 
             JoinGroup();
-        }
-
-        ~MulticastReceiver()
-        {
-            Dispose(false);
         }
 
         internal void StartListen()
@@ -52,7 +47,7 @@ namespace Udp.Data
                 {
                     receivedBytes = _multicastReceiver.Receive(ref ipEndPoint);
                 }
-                catch
+                catch (SocketException)
                 {
                     continue;
                 }
@@ -94,10 +89,12 @@ namespace Udp.Data
                 return;
             }
 
-            _multicastReceiver.DropMulticastGroup(_networkSettings.MulticastAddress);
-            _multicastReceiver.Close();
-
-            _multicastReceiver.Dispose();
+            if (disposing)
+            {
+                _multicastReceiver.DropMulticastGroup(_networkSettings.MulticastAddress);
+                _multicastReceiver.Close();
+                _multicastReceiver.Dispose();
+            }
 
             _disposed = true;
         }

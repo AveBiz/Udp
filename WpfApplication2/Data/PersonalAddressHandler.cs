@@ -120,11 +120,15 @@ namespace Udp.Data
                 return;
             }
 
-            StopSending();
-            _timer.Dispose();
+            if (disposing)
+            {
+                StopSending();
 
-            _personalAddress.Close();
-            _personalAddress.Dispose();
+                _timer.Dispose();
+
+                _personalAddress.Close();
+                _personalAddress.Dispose();
+            }
 
             _disposed = true;
         }

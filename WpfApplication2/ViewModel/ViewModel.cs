@@ -73,7 +73,7 @@ namespace Udp.ViewModel
         internal void Stop()
         {
             _activeClientsChangedTimer.Stop();
-            
+
             IsActive = false;
 
             _model.Stop();
@@ -105,10 +105,14 @@ namespace Udp.ViewModel
             {
                 return;
             }
-            _activeClientsChangedTimer.Stop();
-            _activeClientsChangedTimer.Dispose();
 
-            _model.Dispose();
+            if (disposing)
+            {
+                _activeClientsChangedTimer.Stop();
+                _activeClientsChangedTimer.Dispose();
+
+                _model.Dispose();
+            }
 
             _disposed = true;
         }

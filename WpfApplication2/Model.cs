@@ -91,13 +91,17 @@ namespace Udp
                 return;
             }
 
-            if (_enabled)
+            if (disposing)
             {
-                Stop();
-            }
+                if (_enabled)
+                {
+                    Stop();
+                }
 
-            _multicastReceiver.Dispose();
-            _personalAddressHandler.Dispose();
+                _multicastReceiver.Dispose();
+                _personalAddressHandler.Dispose();
+
+            }
 
             _disposed = true;
         }

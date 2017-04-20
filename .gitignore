@@ -50,5 +50,5 @@ bin
 obj
 packages
 
-*.suo
 *dotsettings*
+*.suo
