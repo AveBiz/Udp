@@ -78,7 +78,7 @@ namespace Udp
             _networkSettings.Connected.Clear();
         }
 
-        internal void ResetConnected()
+        private void ResetConnected()
         {
             _networkSettings.Connected.Clear();
             _networkSettings.Connected.Add(_networkSettings.PersonalAddress);
