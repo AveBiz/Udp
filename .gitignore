@@ -51,3 +51,4 @@ obj
 packages
 
 *.suo
+*dotsettings*
